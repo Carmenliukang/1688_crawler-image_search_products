@@ -150,7 +150,7 @@ def get_1688_url(filename):
     1. 获取 需要 b64 编码的时间戳
     2. 获取 必须传输的参数 signature policy 同时将生成的 图片 key 返回
     3. 上传图片
-    4. 拼接山骨干的徒留
+    4. 拼接查询的结果
     :param filename:
     :return:
     '''
