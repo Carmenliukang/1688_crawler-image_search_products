@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2019-07-05 10:29
 # @Author  : liukang.hero
-# @FileName: test.py
-
+# @FileName: get_1688_url.py
 
 import json
 import time
@@ -11,53 +10,50 @@ import base64
 import random
 import requests
 import contextlib
+from requests_toolbelt import MultipartEncoder
 
-# 用于生成随机数
 chioce_list = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'W', 'X', 'Y', 'Z',
                'a', 'b', 'c', 'd', 'e', 'f', 'h', 'i', 'j', 'k', 'm', 'n', 'p', 'r', 's', 't', 'w', 'x', 'y', 'z', '2',
                '3', '4', '5', '6', '7', '8']
 
 
-# 上传文件
 def request_post_files(url, data, headers):
-    with contextlib.closing(requests.post(url=url, files=data, headers=headers)) as req:
-        data = req.text
-        return "succ", data
+    try:
+        with contextlib.closing(requests.post(url=url, data=data, headers=headers)) as req:
+            data = req.text
+            return "succ", data
+    except Exception as e:
+        print(e)
+        return "fail", {}
 
 
-# post 请求
 def request_post(url, data, headers):
-    with contextlib.closing(requests.post(url=url, data=data, headers=headers)) as req:
-        data = req.text
-        return "succ", data
+    try:
+        with contextlib.closing(requests.post(url=url, data=data, headers=headers)) as req:
+            data = req.text
+            return "succ", data
+    except Exception as e:
+        print(e)
+        return "fail", {}
 
 
-# get 请求
 def request_get(url, params, headers):
-    with contextlib.closing(requests.get(url=url, params=params, headers=headers)) as req:
-        data = req.text
-        return "succ", data
+    try:
+        with contextlib.closing(requests.get(url=url, params=params, headers=headers)) as req:
+            data = req.text
+            return "succ", data
+    except Exception as e:
+        print(e)
+        return "fail", {}
 
 
-def get_time_stamp():
-    return str(int(time.time() * 1000))
-
-
-# 用于生成图片的 key
 def get_key():
     '''
-    cbuimgsearch/Z5Qja4fXPH1562293605000.jpg
-    规则 是 cbuimgsearch/ 10位随机 + 毫秒级别时间戳
+    cbuimgsearch/Z5Qja4fXPH1562293605000.jpg 生活规则是 cbuimgsearch/ + 随机10位 + 毫秒级别时间戳
     :return:
     '''
-    key = "cbuimgsearch/" + "".join(random.sample(chioce_list, 10)) + get_time_stamp()
+    key = "cbuimgsearch/" + "".join(random.sample(chioce_list, 10)) + str(int(time.time() * 1000))
     return key
-
-
-def get_policy(filename):
-    with open(filename, "rb") as f:
-        data = f.read()
-    return base64.b64encode(data)
 
 
 def get_headers():
@@ -72,30 +68,37 @@ def get_headers():
 
 def get_params(filename, signature, policy, OSSAccessKeyId):
     key = get_key()
-
-    data = {
-        "name": (None, filename),
-        "key": (None, key),
-        "policy": (None, policy),
-        # 这个接口可以调用通过
-        "OSSAccessKeyId": (None, OSSAccessKeyId),  # 这个接口可以调用通过
-        "success_action_status": (None, "200"),
-        "callback": (None, ""),
-        "signature": (None, signature),  # 这个可以调用通过
-        "file": open(filename, 'rb').read(),
-
+    file_payload = {
+        "name": filename,
+        "key": key,
+        "policy": policy,
+        "OSSAccessKeyId": OSSAccessKeyId,
+        "success_action_status": "200",
+        "callback": "",
+        "signature": signature,
+        "file": open(filename, 'rb').read()
     }
-    return data, key
+
+    m = MultipartEncoder(file_payload)
+
+    headers = get_headers()
+    headers['Content-Type'] = m.content_type
+    return m, headers, key
 
 
 def get_dataset():
+    '''
+    获取 dataSet 时间戳，用于 加密
+    callback 用于 str replace
+    :return:
+    '''
     url = 'https://open-s.1688.com/openservice/.htm?'
-
+    callback = "jQuery18303374729635985685_" + str(int(time.time() * 1000))
     params = {
-        "callback": "jQuery18303374729635985685_" + str(int(time.time() * 1000)),
+        "callback": callback,
         "serviceIds": "cbu.searchweb.config.system.currenttime",
         "outfmt": "jsonp",
-        "_": get_time_stamp()
+        "_": str(int(time.time() * 1000))
     }
 
     headers = {
@@ -105,19 +108,26 @@ def get_dataset():
     }
 
     status, data = request_get(url, params, headers)
-    return status, data
+    return status, data, callback
 
 
 def get_signature(data_set):
+    '''
+    获取上传文件必须的参数
+    :param data_set: 加密的时间戳
+    :return:
+    '''
     url = 'https://open-s.1688.com/openservice/ossDataService'
     appkey = "{};{}".format('pc_tusou', str(data_set))
+
+    callback = "jQuery18303536909897611926_{}".format(str(int(time.time() * 1000)))
 
     params = {
         "appName": "pc_tusou",
         "appKey": base64.b64encode(appkey.encode("utf-8")),
         # 发生变化 pc_tusou;1562288848391 b64 编码 pc_tusou;毫秒级时间戳
-        "callback": "jQuery18303536909897611926_{}".format(str(int(time.time() * 1000))),  # 需要判断
-        "_": get_time_stamp(),  # 时间戳
+        "callback": callback,
+        "_": str(int(time.time() * 1000)),  # 时间戳
         "": ""
     }
 
@@ -128,20 +138,32 @@ def get_signature(data_set):
     }
 
     status, data = request_get(url, params, headers)
-    data = data.split("(")[1].replace(');', '')
 
-    result = json.loads(data)
+    # 返回结果处理
+    json_str = data.replace("{}(".format(callback), "").replace(");", '')
+    result = json.loads(json_str)
     signature = result.get('data', {}).get('signature', '')
     policy = result.get('data', {}).get('policy', '')
     OSSAccessKeyId = result.get('data', {}).get('accessid', '')
+
     return status, signature, policy, OSSAccessKeyId
 
 
 def upload_1688_image(filename, signature, policy, OSSAccessKeyId):
+    '''
+    上传文件。这里使用的是 MultipartEncoder 包，更加便捷生成 multipart/form-data 类型的body
+    Content-Type: multipart/form-data; boundary=----WebKitFormBoundarybsKUYKw7Wu6nNEAG
+    :param filename: 上传文件名称
+    :param signature:必须参数，通过 调用 https://open-s.1688.com/openservice/ossDataService 获取。
+    :param policy:必须参数，通过 调用 https://open-s.1688.com/openservice/ossDataService 获取。
+    :param OSSAccessKeyId:必须参数，通过 调用 https://open-s.1688.com/openservice/ossDataService 获取。
+    :return: status fail|succ key图片唯一ID
+    '''
     url = 'https://cbusearch.oss-cn-shanghai.aliyuncs.com/'
-    headers = get_headers()
-    params, key = get_params(filename, signature, policy, OSSAccessKeyId)
-    status, res = request_post_files(url, params, headers)
+
+    m, headers, key = get_params(filename, signature, policy, OSSAccessKeyId)
+
+    status, res = request_post_files(url, m, headers)
     return status, key
 
 
@@ -154,15 +176,16 @@ def get_1688_url(filename):
     :param filename:
     :return:
     '''
-    status, data = get_dataset()
-    # todo 这里是一个优化的点，暂时没有找到 jQuery 返回结果的解析包
-    data = data.split("(")[1].replace(');', '')
-    data_set = json.loads(data).get('cbu.searchweb.config.system.currenttime', {}).get('dataSet', '')
+    status, data, callback = get_dataset()
+
+    # 这里 采用 str 匹配，因为相比较正则，str replace 更加快
+    json_str = data.replace("{}(".format(callback), "").replace(");", '')
+    data_set = json.loads(json_str).get('cbu.searchweb.config.system.currenttime', {}).get('dataSet', '')
 
     # 获取相关的 接口验证参数。同时 获取生成的 图片key
     status, signature, policy, OSSAccessKeyId = get_signature(data_set)
 
-    # 上传图片
+    # uoload image
     status, key = upload_1688_image(filename, signature, policy, OSSAccessKeyId)
 
     # 上传成功后，拼接生成的 查询 URL
