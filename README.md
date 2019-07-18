@@ -82,6 +82,6 @@ URL：https://open-s.1688.com/openservice/ossDataService?appName=pc_tusou&appKey
   然后就可以卡到  这里的时间戳和 _ 的时间戳是不一致的， 其实 是通过接口调用的。全局查询 这个 时间戳，然后 就可以看到调用的接口，这样就可以了。
   
 
-
+重构了代码，增加配置文件，log 记录模块
 
  

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2019-07-05 10:29
 # @Author  : liukang.hero
-# @FileName: get_1688_url_by_filename.py
+# @FileName: get_1688_url.py
 
 import io
 import json
@@ -57,7 +57,7 @@ def get_headers():
     return headers
 
 
-def get_params(filename, signature, policy, OSSAccessKeyId):
+def get_params(image_url, signature, policy, OSSAccessKeyId):
     key = get_key()
     name = "".join(random.sample(chioce_list, 5)) + ".jpg"
     file_payload = {
@@ -68,7 +68,7 @@ def get_params(filename, signature, policy, OSSAccessKeyId):
         "success_action_status": "200",
         "callback": "",
         "signature": signature,
-        "file": get_file_data(filename),
+        "file": get_reuqest_data(image_url)
     }
 
     m = MultipartEncoder(file_payload)
@@ -161,7 +161,7 @@ def get_signature(data_set):
     return status, signature, policy, OSSAccessKeyId
 
 
-def upload_1688_image_by_url(filename, signature, policy, OSSAccessKeyId):
+def upload_1688_image_by_url(image_url, signature, policy, OSSAccessKeyId):
     '''
     上传文件。这里使用的是 MultipartEncoder 包，更加便捷生成 multipart/form-data 类型的body
     Content-Type: multipart/form-data; boundary=----WebKitFormBoundarybsKUYKw7Wu6nNEAG
@@ -173,20 +173,20 @@ def upload_1688_image_by_url(filename, signature, policy, OSSAccessKeyId):
     '''
     url = 'https://cbusearch.oss-cn-shanghai.aliyuncs.com/'
 
-    m, headers, key = get_params(filename, signature, policy, OSSAccessKeyId)
+    m, headers, key = get_params(image_url, signature, policy, OSSAccessKeyId)
 
     status, res = request_post(url, m, headers)
 
     return status, key
 
 
-def get_1688_url_by_filename(filename):
+def get_1688_url_by_image_url(image_url):
     '''
     1. 获取 需要 b64 编码的时间戳
     2. 获取 必须传输的参数 signature policy 同时将生成的 图片 key 返回
     3. 上传图片
     4. 拼接查询的结果
-    :param filename:
+    :param image_url:
     :return:
     '''
     status, data, callback = get_dataset()
@@ -199,7 +199,7 @@ def get_1688_url_by_filename(filename):
     status, signature, policy, OSSAccessKeyId = get_signature(data_set)
 
     # uoload image file
-    status, key = upload_1688_image_by_url(filename, signature, policy, OSSAccessKeyId)
+    status, key = upload_1688_image_by_url(image_url, signature, policy, OSSAccessKeyId)
 
     # 上传成功后，拼接生成的 查询 URL
     if status == "succ":
@@ -211,9 +211,9 @@ def get_1688_url_by_filename(filename):
 
 
 if __name__ == '__main__':
-    filename = "image/666.jpg"
+    image_url = 'https://img.alicdn.com/imgextra/i4/1926017125/O1CN01ahHXLx22VITkqbuim_!!1926017125.jpg'
     t0 = time.time()
-    url_res = get_1688_url_by_filename(filename)
+    url_res = get_1688_url_by_image_url(image_url)
     print(url_res)
     t1 = time.time()
     print(t1 - t0)
