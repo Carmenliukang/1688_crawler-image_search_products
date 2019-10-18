@@ -1,11 +1,7 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
-# @Time    : 2019-07-18 15:04
-# @Author  : liukang.hero
-# @FileName: logger.py
 
 import os
-import time
 import logging.handlers
 from lib.config import setting
 

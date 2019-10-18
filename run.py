@@ -1,8 +1,5 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
-# @Time    : 2019-07-18 11:57
-# @Author  : liukang.hero
-# @FileName: run.py
 
 
 import time

@@ -1,19 +1,18 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
-# @Time    : 2019-07-18 11:58
-# @Author  : liukang.hero
-# @FileName: func_txy.py
 
-import os
+import base64
+import contextlib
 import io
 import json
-import time
-import base64
+import os
 import random
+import time
+
 import requests
-import contextlib
-from lib.logger import logger
 from requests_toolbelt import MultipartEncoder
+
+from lib.logger import logger
 
 chioce_list = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'W', 'X', 'Y', 'Z',
                'a', 'b', 'c', 'd', 'e', 'f', 'h', 'i', 'j', 'k', 'm', 'n', 'p', 'r', 's', 't', 'w', 'x', 'y', 'z', '2',
@@ -64,6 +63,7 @@ def get_headers():
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36",
         "Accept": "*/*",
         "Cache-Control": "no-cache",
+        "Referer":"https://www.1688.com/",
     }
     return headers
 
@@ -125,6 +125,7 @@ def get_dataset():
 
 def get_signature_result_manage(data, callback):
     json_str = data.replace("{}(".format(callback), "").replace(");", '')
+    print(json_str)
     result = json.loads(json_str)
     signature = result.get('data', {}).get('signature', '')
     policy = result.get('data', {}).get('policy', '')

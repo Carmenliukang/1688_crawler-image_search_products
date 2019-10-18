@@ -1,8 +1,5 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
-# @Time    : 2019-04-02 16:07
-# @Author  : liukang.hero
-# @FileName: config.py
 
 import os
 import configparser

@@ -1,8 +1,5 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
-# @Time    : 2019-07-05 10:29
-# @Author  : liukang.hero
-# @FileName: get_1688_url.py
 
 import io
 import json
