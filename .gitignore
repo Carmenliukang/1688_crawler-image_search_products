@@ -8,8 +8,6 @@ __pycache__/
 *.iml
 .idea/
 
-*.jpg
-
 
 # C extensions
 *.so
