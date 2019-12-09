@@ -84,8 +84,8 @@ class Alibaba(object):
         """
 
         url = 'https://cbusearch.oss-cn-shanghai.aliyuncs.com/'
-        key = "cbuimgsearch/" + get_random_str(10) + str(int(time.time() * 1000))
-        name = get_random_str(5) + ".jpg"
+        key = "cbuimgsearch/" + get_random_str(10) + str(int(time.time()) * 1000) + ".jepg"
+        name = get_random_str(5) + ".jepg"
 
         files = {
             "name": (None, name),
@@ -116,7 +116,8 @@ class Alibaba(object):
 
         # 上传成功后，拼接生成的 查询 URL
         if status == "succ":
-            url_res = 'https://s.1688.com/youyuan/index.htm?tab=imageSearch&imageType=oss&imageAddress={}'.format(key)
+            url_res = 'https://s.1688.com/youyuan/index.htm?tab=imageSearch&imageType=oss&imageAddress={}'.format(
+                key)
             return url_res
         else:
             return ""
