@@ -27,6 +27,7 @@ class JD(object):
         }
 
         status, data = request_post(url, files=files, headers=self.headers)
+        print(data)
         return status, data
 
     def run(self, filename):

@@ -58,10 +58,11 @@ class Alibaba(object):
         :return:
         '''
         url = 'https://open-s.1688.com/openservice/ossDataService'
-        appkey = "{};{}".format('pc_tusou', str(data_set))
+        key = str(base64.b64decode("cGNfdHVzb3U=".encode("utf-8")), encoding="utf-8")
+        appkey = "{};{}".format(key, str(data_set))
 
         params = {
-            "appName": "pc_tusou",
+            "appName": key,
             "appKey": base64.b64encode(appkey.encode("utf-8")),
             # 发生变化 pc_tusou;1562288848391 b64 编码 pc_tusou;毫秒级时间戳
         }
@@ -97,7 +98,7 @@ class Alibaba(object):
             "file": (name, open(filename, "rb").read())
         }
 
-        status, res = request_post(url, files=files, headers=self.headers)
+        status, res = request_post(url, data=None, files=files, headers=self.headers)
 
         return status, key
 

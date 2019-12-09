@@ -14,5 +14,5 @@ if __name__ == '__main__':
     url = TaoBao().run(filename)
     print(url)
 
-    url = JD().run(filename)
-    print(url)
+    # url = JD().run(filename)
+    # print(url)
