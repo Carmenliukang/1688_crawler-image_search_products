@@ -64,7 +64,6 @@ class Alibaba(object):
         params = {
             "appName": key,
             "appKey": base64.b64encode(appkey.encode("utf-8")),
-            # 发生变化 pc_tusou;1562288848391 b64 编码 pc_tusou;毫秒级时间戳
         }
 
         status, data = request_get(url, params, self.headers)
@@ -105,7 +104,7 @@ class Alibaba(object):
     def run(self, filename):
         status, data = self.get_dateset()
 
-        # 这里 采用 str 匹配，因为相比较正则，str replace 更加快
+        # json 直接解析
         data_set = data.get('cbu.searchweb.config.system.currenttime', {}).get('dataSet', '')
 
         # 获取相关的 接口验证参数。同时 获取生成的 图片key

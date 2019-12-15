@@ -23,13 +23,5 @@ lib/taobao_lib.py
 2. 说明：cookie 最好增加
 ***
 
-京东
----------
-lib/jd_lib.py
-***
-简要流程：
-1. upload image 
-***
-
 
 
