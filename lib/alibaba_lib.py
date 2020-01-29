@@ -22,11 +22,11 @@ class Alibaba(object):
 
     def _headers(self):
         headres = {
-            'Origin': "https://www.1688.com",
+            'Origin': "https://s.1688.com",
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36",
             "Accept": "*/*",
             "Cache-Control": "no-cache",
-            "refer": "https://www.1688.com/"
+            "refer": "https://s.1688.com/selloffer/offer_search.htm?keywords=python+&button_click=top&n=y&netType=1%2C11"
         }
         self.headers = headres
 
