@@ -115,7 +115,7 @@ class Alibaba(object):
 
         # 上传成功后，拼接生成的 查询 URL
         if status == "succ":
-            url_res = 'https://s.1688.com/youyuan/index.htm?tab=imageSearch&imageType=oss&imageAddress={}'.format(
+            url_res = 'https://s.1688.com/youyuan/index.htm?tab=imageSearch&imageType=oss&imageAddress={}&spm='.format(
                 key)
             return url_res
         else:
