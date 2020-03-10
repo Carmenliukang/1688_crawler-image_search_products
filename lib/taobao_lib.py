@@ -5,7 +5,10 @@
 import json
 from lib.func_txy import request_post
 from lib.func_txy import get_random_str
-
+from urllib.parse import urlparse
+import requests
+import io
+import os
 
 class TaoBao(object):
     def __init__(self, cookie=None):
@@ -27,10 +30,17 @@ class TaoBao(object):
 
     def upload_img(self, filename):
         url = "https://s.taobao.com/image"
+        if os.path.exists(filename):
+            bytestream = open(filename, "rb").read()
+        else:
+            us = urlparse(filename)
+            if us:
+                r = requests.get(filename)
+                bytestream = io.BytesIO(r.content)
         files = {
             "cross": (None, "taobao"),
             "type": (None, "iframe"),
-            "imgfile": (get_random_str(5) + ".jpg", open(filename, "rb").read(), "image/jpeg"),
+            "imgfile": (get_random_str(5) + ".jpg", bytestream, "image/jpeg"),
         }
 
         status, data = request_post(url, files=files, headers=self.headers)
