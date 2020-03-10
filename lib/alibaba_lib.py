@@ -96,9 +96,10 @@ class Alibaba(object):
             bytestream = open(filename, "rb").read()
         else:
             us = urlparse(filename)
-            if us:
-                r = requests.get(filename)
-                bytestream = io.BytesIO(r.content)
+            if not us:
+                return 'fail', None
+            r = requests.get(filename)
+            bytestream = io.BytesIO(r.content)
 
         files = {
             "name": (None, name),
