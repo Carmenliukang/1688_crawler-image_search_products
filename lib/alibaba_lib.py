@@ -11,6 +11,7 @@ from urllib.parse import urlparse
 import requests
 import io
 
+
 class Alibaba(object):
     """
     1688 PC 端接口获取相似商品的接口
@@ -19,7 +20,7 @@ class Alibaba(object):
     def __init__(self):
         self.upload_url = 'https://cbusearch.oss-cn-shanghai.aliyuncs.com/'  # 上传图片
         self.sign_url = "https://open-s.1688.com/openservice/ossDataService"  # 获取 sign 加密
-        self.imageSearch_service_url="https://open-s.1688.com/openservice/imageSearchOfferResultViewService"
+        self.imageSearch_service_url = "https://open-s.1688.com/openservice/imageSearchOfferResultViewService"
         self._headers()
         self.search_page_size = 40
 
@@ -28,11 +29,12 @@ class Alibaba(object):
 
     def _headers(self):
         headres = {
-            'Origin': "https://s.1688.com",
+            'Origin': "https://www.1688.com",
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36",
             "Accept": "*/*",
             "Cache-Control": "no-cache",
-            "refer": "https://s.1688.com/selloffer/offer_search.htm?keywords=python+&button_click=top&n=y&netType=1%2C11"
+            "cookie": "_samesite_flag_=true; _tb_token_=ee5138b911917; cookie2=163f6e3722351213514df4c9ab9116f6; t=96e8d0ab6d636f19306c429b276db552; __cn_logon__=false; ali_ab=120.253.224.246.1587973275662.6; l=caJGIJNTkgnFkWiGkSYyeKDwPQuOAiFJdcPgDahIhDlFGpKMvULclIQGPBDmDhmDdCsLYIU; na=ijBRbdRXZeKwRcTHilfNHSt+; ",
+            "refer": "https://www.1688.com/"
         }
         self.headers = headres
 
@@ -115,7 +117,7 @@ class Alibaba(object):
         status, res = request_post(url, data=None, files=files, headers=self.headers)
         return status, key
 
-    def img_search(self, img_key, dataSet,  beginPage=1):
+    def img_search(self, img_key, dataSet, beginPage=1):
         """
         用于上传图片并搜索商品列表
         从1688官网图搜页面扒出来的jsonp接口
@@ -128,22 +130,22 @@ class Alibaba(object):
         appKey = str(app_key, encoding="utf8")
 
         request_params = {
-            "imageAddress":img_key,
-            "imageType":"oss",
-            "pageSize":self.search_page_size,
-            "beginPage":beginPage,
-            "categoryId":"null",
-            "appName":app_name,
-            "appKey":appKey,
-            "callback":""
+            "imageAddress": img_key,
+            "imageType": "oss",
+            "pageSize": self.search_page_size,
+            "beginPage": beginPage,
+            "categoryId": "null",
+            "appName": app_name,
+            "appKey": appKey,
+            "callback": ""
         }
         status_desc, data = request_get(self.imageSearch_service_url, request_params, headers=self.headers)
         if status_desc == "succ":
-            return 'succ',data
+            return 'succ', data
         else:
             return 'fail', None
 
-    def run(self, filename, need_products = False):
+    def run(self, filename, need_products=False):
         status, data = self.get_dateset()
 
         # json 直接解析
@@ -161,9 +163,9 @@ class Alibaba(object):
             if need_products == False:
                 return url_res
             else:
-                 status_desc,data = self.img_search(key, data_set)
-                 if status_desc == 'succ':
-                     return data
-                 return None
+                status_desc, data = self.img_search(key, data_set)
+                if status_desc == 'succ':
+                    return data
+                return None
         else:
             return ""
