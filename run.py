@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from lib.taobao_lib import TaoBao
 from lib.alibaba_lib import Alibaba
 
 if __name__ == '__main__':
@@ -10,5 +9,3 @@ if __name__ == '__main__':
     url = Alibaba().run(filename)
     print(url)
 
-    # url = TaoBao().run(filename)
-    # print(url)
