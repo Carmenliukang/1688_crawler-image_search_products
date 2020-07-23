@@ -33,7 +33,6 @@ class Alibaba(object):
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36",
             "Accept": "*/*",
             "Cache-Control": "no-cache",
-            "cookie": "_samesite_flag_=true; _tb_token_=ee5138b911917; cookie2=163f6e3722351213514df4c9ab9116f6; t=96e8d0ab6d636f19306c429b276db552; __cn_logon__=false; ali_ab=120.253.224.246.1587973275662.6; l=caJGIJNTkgnFkWiGkSYyeKDwPQuOAiFJdcPgDahIhDlFGpKMvULclIQGPBDmDhmDdCsLYIU; na=ijBRbdRXZeKwRcTHilfNHSt+; ",
             "refer": "https://www.1688.com/"
         }
         self.headers = headres
