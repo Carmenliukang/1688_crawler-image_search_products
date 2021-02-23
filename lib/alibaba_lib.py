@@ -1,18 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import time
-import base64
+import io
+import os
+import re
 import json
-from lib.func_txy import request_get
+import requests
 from lib.func_txy import request_post
 from lib.func_txy import request_get_content
 from lib.func_txy import get_random_str
-from lib.func_txy import get_random_digits
-import os.path
 from urllib.parse import urlparse
-import requests
-import io
 
 
 class Alibaba(object):
@@ -69,34 +65,25 @@ class Alibaba(object):
             key = url.split("/")[-1]
         return status, key
 
-    def img_search(self, img_key, dataSet, beginPage=1):
+    def img_search(self, url):
         """
-        todo 暂未升级到最新版本
         用于上传图片并搜索商品列表
         从1688官网图搜页面扒出来的jsonp接口
         :return: dict o None
         """
-        app_name = "pc_tusou"
-
-        app_key = base64.b64encode(f'{app_name};{dataSet}'.encode("utf-8"))
-
-        appKey = str(app_key, encoding="utf8")
-
-        request_params = {
-            "imageAddress": img_key,
-            "imageType": "oss",
-            "pageSize": self.search_page_size,
-            "beginPage": beginPage,
-            "categoryId": "null",
-            "appName": app_name,
-            "appKey": appKey,
-            "callback": ""
-        }
-        status_desc, data = request_get(self.imageSearch_service_url, request_params, headers=self.headers)
+        status_desc, data = request_get_content(url, headers=self.headers)
         if status_desc == "succ":
             return 'succ', data
         else:
             return 'fail', None
+
+    def check_goods(self, html):
+        """
+        todo 这里需要匹配
+        :param html:
+        :return:
+        """
+        re.findall("window.data.offerresultData = successDataCheck\(.*?\)", html)
 
     def run(self, filename, need_products=False):
         # uoload image file
@@ -108,7 +95,7 @@ class Alibaba(object):
             if need_products == False:
                 return url_res
             else:
-                status_desc, data = self.img_search(key, "")
+                status_desc, data = self.img_search(url_res)
                 if status_desc == 'succ':
                     return data
                 return None
