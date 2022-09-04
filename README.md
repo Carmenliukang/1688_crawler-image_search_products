@@ -1,8 +1,10 @@
 # image_search_products
 
-> ![希望](https://s1.ax1x.com/2020/06/15/NCNpm8.jpg)
+> ![希望](https://github.com/Carmenliukang/1688_crawler-image_search_products/blob/master/image/1.jpeg)
 >
-> **不畏过往 不惧将来**
+> **What's past is prologue!**
+>
+> **凡是过往，皆为序章**
 
 ***
 
@@ -16,11 +18,22 @@
 
 ### 1688
 
-lib/alibaba_lib 是具体实现方式
+lib/alibaba 是通过模拟Chrom浏览器upload image,and search goods.
 
     简要流程如下：
-    1. 填入cookie
-    2. upload image 
-    3. 返回链接
+    1. get cookie and token
+    2. sign
+    3. upload image
+    3. image search
+
+## Author
+
+如果对您有用，可以请作者喝杯咖啡:
+
+> ![](https://github.com/Carmenliukang/1688_crawler-image_search_products/blob/master/image/alipay.png)
+
+> ![](https://github.com/Carmenliukang/1688_crawler-image_search_products/blob/master/image/wxpay.png)
+
+
 
 
