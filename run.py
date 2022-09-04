@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     # upload image and get image id
     upload = Upload(cookies=cookies)
-    res = upload.upload(filename="data/下载.jpeg")
+    res = upload.upload(filename="data/down.jpeg")
     image_id = res.json().get("data", {}).get("imageId", "")
     if not image_id:
         raise Exception("not image id")
