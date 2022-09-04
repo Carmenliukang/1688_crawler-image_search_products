@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from lib.alibaba import Token, Upload, ImageSearch
+from lib.alibaba import ImageSearch, Token, Upload
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     # get cookie and token
     token = Token()

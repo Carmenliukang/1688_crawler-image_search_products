@@ -2,15 +2,16 @@
 # -*- coding: utf-8 -*-
 
 
+import base64
+import json
 import re
 from typing import Dict
 
-import base64
-import json
 import requests
 from requests.cookies import RequestsCookieJar
-from lib.sign import Sign
+
 from lib.func_txy import now, request_get, request_post
+from lib.sign import Sign
 
 
 class Alibaba(object):
@@ -27,20 +28,20 @@ class Token(Alibaba):
     def get_header(self) -> Dict[str, str]:
         headers = {
             "referer": "https://www.1688.com/",
-            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36",
         }
         return headers
 
     def get_params(self) -> Dict[str, str]:
         params = {
-            'jsv': '2.7.0',
-            'appKey': self.app_key,
-            't': str(self.t),
-            'api': 'mtop.taobao.widgetService.getJsonComponent',
-            'v': '1.0',
-            'type': 'json',
-            'dataType': 'jsonp',
-            'callback': 'mtopjsonp1'
+            "jsv": "2.7.0",
+            "appKey": self.app_key,
+            "t": str(self.t),
+            "api": "mtop.taobao.widgetService.getJsonComponent",
+            "v": "1.0",
+            "type": "json",
+            "dataType": "jsonp",
+            "callback": "mtopjsonp1",
         }
         return params
 
@@ -76,10 +77,10 @@ class Upload(Alibaba):
 
     def get_headers(self):
         headres = {
-            'Origin': "https://s.1688.com",
+            "Origin": "https://s.1688.com",
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:85.0) Gecko/20100101 Firefox/85.0",
             "referer": "https://s.1688.com",
-            'Content-Type': 'application/x-www-form-urlencoded',
+            "Content-Type": "application/x-www-form-urlencoded",
             # "cookie":";".join([f"{k}={v}" for k,v in self.cookies.items()])+"."
         }
         return headres
@@ -95,7 +96,7 @@ class Upload(Alibaba):
             "v": "1.0",
             "type": "originaljson",
             "dataType": "jsonp",
-            "sign": sign_str
+            "sign": sign_str,
         }
         return params
 
@@ -107,9 +108,9 @@ class Upload(Alibaba):
             {
                 "imageBase64": str(b64_bytes).replace("b'", "").replace("'", ""),
                 "appName": "searchImageUpload",
-                "appKey": "pvvljh1grxcmaay2vgpe9nb68gg9ueg2"
+                "appKey": "pvvljh1grxcmaay2vgpe9nb68gg9ueg2",
             },
-            separators=(',', ':')
+            separators=(",", ":"),
         )
         return {"data": data}
 
@@ -119,8 +120,13 @@ class Upload(Alibaba):
         data = self.get_data(filename=filename)
         params = self.get_params(data=data.get("data", ""), t=t)
         headers = self.get_headers()
-        req = request_post(url=self.url, params=params, headers=headers, data=data,
-                           cookies=self.cookies.get_dict())
+        req = request_post(
+            url=self.url,
+            params=params,
+            headers=headers,
+            data=data,
+            cookies=self.cookies.get_dict(),
+        )
         return req
 
 
@@ -130,11 +136,7 @@ class ImageSearch(Alibaba):
         super(ImageSearch, self).__init__()
 
     def get_params(self, image_id: str) -> Dict[str, str]:
-        params = {
-            'tab': 'imageSearch',
-            'imageId': image_id,
-            'imageIdList': image_id
-        }
+        params = {"tab": "imageSearch", "imageId": image_id, "imageIdList": image_id}
         return params
 
     def get_headers(self) -> Dict[str, str]:

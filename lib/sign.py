@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 
-import struct
 import ctypes
+import struct
 
 
 def struct_format(num):
     if num > 0:
-        res = struct.unpack('i', struct.pack('I', num))
+        res = struct.unpack("i", struct.pack("I", num))
         return res[0] if res else 0
     else:
         return num
@@ -58,10 +58,14 @@ class Sign(object):
             h = struct_format(struct_format(struct_format(2147483648 ^ g) ^ e) ^ f)
         else:
             if struct_format(c | d):
-                if 1073741824 & g & (2 ** 32 - 1):
-                    h = struct_format(struct_format(struct_format(3221225472 ^ g) ^ e) ^ f)
+                if 1073741824 & g & (2**32 - 1):
+                    h = struct_format(
+                        struct_format(struct_format(3221225472 ^ g) ^ e) ^ f
+                    )
                 else:
-                    h = struct_format(struct_format(struct_format(1073741824 ^ g) ^ e) ^ f)
+                    h = struct_format(
+                        struct_format(struct_format(1073741824 ^ g) ^ e) ^ f
+                    )
             else:
                 h = struct_format(struct_format(g ^ e) ^ f)
         return h
