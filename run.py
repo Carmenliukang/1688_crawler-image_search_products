@@ -16,7 +16,9 @@ if __name__ == "__main__":
     image_id = res.json().get("data", {}).get("imageId", "")
     if not image_id:
         raise Exception("not image id")
+    print(image_id)
 
     # search goods by image id
     image_search = ImageSearch()
     req = image_search.request(image_id=image_id)
+    print(req.url)
