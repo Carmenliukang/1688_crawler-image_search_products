@@ -11,7 +11,7 @@ import requests
 
 
 def request_post(
-    url, params=None, data=None, files={}, headers={}, timeout=10, cookies=None
+    url, params=None, data=None, files=None, headers=None, timeout=10, cookies=None
 ):
     with contextlib.closing(
         requests.post(
@@ -27,7 +27,7 @@ def request_post(
         return req
 
 
-def request_get(url, params, headers, timeout=10, cookies=None):
+def request_get(url, params=None, headers=None, timeout=10, cookies=None):
     with contextlib.closing(
         requests.get(
             url=url, params=params, headers=headers, cookies=cookies, timeout=timeout
