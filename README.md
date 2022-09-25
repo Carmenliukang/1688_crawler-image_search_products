@@ -28,11 +28,8 @@ lib/alibaba 是通过模拟Chrom浏览器upload image,and search goods.
 
 ## Author
 
-如果对您有用，可以请作者喝杯咖啡:
+如果对您有用，可以 star
 
-> ![](https://github.com/Carmenliukang/1688_crawler-image_search_products/blob/master/image/alipay.png)
-
-> ![](https://github.com/Carmenliukang/1688_crawler-image_search_products/blob/master/image/wxpay.png)
 
 
 

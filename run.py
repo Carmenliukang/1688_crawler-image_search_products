@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 
-from lib import ali1688, alibaba
+from lib.ali1688 import ali1688
+from lib.alibaba import alibaba
 
 if __name__ == "__main__":
 
@@ -20,7 +21,7 @@ if __name__ == "__main__":
         raise Exception("not image id")
     print(image_id)
 
-    # search goods by image id
+    # search goods by i®mage id
     image_search = ali1688.ImageSearch()
     req = image_search.request(image_id=image_id)
     print(req.url)

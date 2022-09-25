@@ -10,8 +10,8 @@ from typing import Dict
 import requests
 from requests.cookies import RequestsCookieJar
 
+from lib.ali1688.sign import Sign
 from lib.func_txy import now, request_get, request_post
-from lib.sign import Sign
 
 
 class Ali1688(object):
