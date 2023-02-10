@@ -10,12 +10,8 @@ if __name__ == "__main__":
 
     # 1688 example
     # get cookie and token
-    token = ali1688.Token()
-    req = token.request()
-    cookies = req.cookies
-
-    # upload image and get image id
-    upload = ali1688.Upload(cookies=cookies)
+    # # upload image and get image id
+    upload = ali1688.Ali1688Upload()
     res = upload.upload(filename=path)
     image_id = res.json().get("data", {}).get("imageId", "")
     if not image_id:
@@ -23,14 +19,19 @@ if __name__ == "__main__":
     print(image_id)
 
     # search goods by i®mage id
-    image_search = ali1688.ImageSearch()
+    image_search = ali1688.Ali1688ImageSearch()
     req = image_search.request(image_id=image_id)
     print(req.url)
+
+    taobao_upload = ali1688.WorldTaobao()
+    res = taobao_upload.upload(filename=path)
+    if res.json().get("data"):
+        print("taobao_upload success")
 
     # alibaba example
     upload = alibaba.Upload()
     image_key = upload.upload(filename=path)
-    print(f"{image_key=}")
+    print(f"{image_key}")
 
     image_searh = alibaba.ImageSearch()
     req = image_searh.search(image_key=image_key)
