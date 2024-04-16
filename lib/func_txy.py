@@ -1,13 +1,17 @@
 # !/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
 import contextlib
 import random
 import string
 import time
-
 import requests
+import hashlib
+import base64
+
+
+def calculate_md5_hash(text: str):
+    return hashlib.md5(text.encode("utf-8")).hexdigest()
 
 
 def request_post(
@@ -46,3 +50,17 @@ def get_random_digits(k):
 
 def now():
     return int(time.time() * 1000)
+
+
+def get_headers():
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
+
+    return headers
+
+
+def fileb64_encode(path):
+    with open(path, "rb") as f:
+        b64_str = base64.b64encode(f.read()).decode("ascii")
+        return b64_str
